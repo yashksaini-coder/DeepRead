@@ -1,0 +1,153 @@
+/* DeepRead — Chainlit custom theme.
+   Modern minimal with indigo accent. Carries the same identity from
+   the prior Gradio iteration: Inter sans + JetBrains Mono for technical
+   readouts, soft borders, restrained palette, soft 8px corners.
+
+   Chainlit ships with shadcn-like tokens under :root and dark mode
+   variables under .dark. We override the indigo accent and the type
+   stack; the rest of the framework's design tokens flow through. */
+
+:root, .dark {
+  /* Indigo accent — same hex as the Gradio iteration */
+  --primary: 239 84% 67%;          /* #6366F1 indigo */
+  --primary-foreground: 0 0% 100%;
+  --ring: 239 84% 67%;
+}
+
+.dark {
+  --background: 240 8% 4%;          /* #0A0A0C neutral near-black */
+  --foreground: 240 6% 96%;         /* #F5F5F7 */
+  --card: 240 14% 8%;               /* #14141A surface */
+  --card-foreground: 240 6% 96%;
+  --popover: 240 14% 8%;
+  --popover-foreground: 240 6% 96%;
+  --muted: 240 10% 12%;             /* #1D1D24 elevated */
+  --muted-foreground: 240 5% 65%;
+  --border: 240 6% 20%;
+  --input: 240 6% 16%;
+  --secondary: 240 10% 12%;
+  --secondary-foreground: 240 6% 96%;
+}
+
+/* Body + chat surface */
+html, body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif !important;
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Mono for code blocks, kbd, citation backticks */
+code, pre, kbd, samp, .font-mono {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace !important;
+}
+
+/* Status messages (the pinned budget bar uses author="status") get a
+   subtler treatment — they're meta, not content. */
+[data-author="status"] .markdown-body {
+  color: hsl(var(--muted-foreground));
+  font-size: 0.875rem;
+}
+[data-author="status"] code {
+  background: transparent !important;
+  color: hsl(var(--foreground));
+  font-size: 0.8125rem;
+  padding: 0 2px;
+}
+
+/* Action buttons (paper cards) — make them feel like a horizontal
+   card row, not chips */
+button[data-test="action"],
+.actions-container button {
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  padding: 8px 14px !important;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+
+/* Tighter assistant bubble — the answer is the headline, no chrome competing */
+.message-content {
+  line-height: 1.65;
+}
+
+/* Footnote markers inline in the answer (`[^1]` rendered) */
+.markdown-body sup a {
+  color: hsl(var(--primary));
+  text-decoration: none;
+  font-weight: 600;
+}
+.markdown-body sup a:hover { text-decoration: underline; }
+
+/* Scrollbar polish */
+*::-webkit-scrollbar { width: 6px; height: 6px; }
+*::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 3px;
+}
+*::-webkit-scrollbar-track { background: transparent; }
+
+/* Hide Plotly's hover modebar (camera/zoom/pan etc.) — clutter for our
+   read-only context + benchmark charts. plotly.js renders this directly,
+   so the cleanest mute is at the CSS layer. */
+.js-plotly-plot .modebar-container,
+.js-plotly-plot .modebar,
+.modebar-container,
+.modebar {
+  display: none !important;
+}
+
+/* Sidebar typography — denser than chat body, since we're stacking
+   budget + library + classics in a narrow column. */
+[data-test="element-sidebar"] .markdown-body,
+.element-sidebar .markdown-body {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+[data-test="element-sidebar"] .markdown-body h1,
+[data-test="element-sidebar"] .markdown-body h2,
+[data-test="element-sidebar"] .markdown-body h3,
+[data-test="element-sidebar"] .markdown-body strong {
+  font-size: 0.875rem;
+}
+[data-test="element-sidebar"] .markdown-body hr {
+  margin: 8px 0;
+  opacity: 0.4;
+}
+
+/* Floating "Context" toggle — the chat message whose avatar is fetched from
+   /avatars/sidebar_toggle carries only the open_sidebar action. We hide the
+   message envelope (avatar + body) and fix-position the action button itself
+   into the top-right of the viewport.
+
+   Chainlit doesn't emit a stable data-author attribute on the message
+   container, so we anchor on the avatar's src URL via :has(). */
+.step:has(img[src*="/avatars/sidebar_toggle"]) {
+  position: fixed !important;
+  top: 12px !important;
+  right: 130px !important;       /* leave room for Readme + theme toggle */
+  z-index: 50;
+  padding: 0 !important;
+  margin: 0 !important;
+  width: auto !important;
+  background: transparent !important;
+}
+.step:has(img[src*="/avatars/sidebar_toggle"]) img,
+.step:has(img[src*="/avatars/sidebar_toggle"]) .markdown-body {
+  display: none !important;
+}
+.step:has(img[src*="/avatars/sidebar_toggle"]) > div {
+  padding: 0 !important;
+  margin: 0 !important;
+  gap: 0 !important;
+}
+.step:has(img[src*="/avatars/sidebar_toggle"]) button {
+  border-radius: 8px !important;
+  padding: 6px 12px !important;
+  font-size: 0.8125rem !important;
+  background: hsl(var(--muted)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  height: auto !important;
+}
+.step:has(img[src*="/avatars/sidebar_toggle"]) button:hover {
+  background: hsl(var(--accent)) !important;
+}
