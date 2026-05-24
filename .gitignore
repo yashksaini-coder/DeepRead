@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info/
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Editor
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# Benchmark logs (the JSON-lines results file is committed; raw stdout is not)
+benchmarks/sweep.log
+benchmarks/sweep.*.log
+
+# Local model cache & ephemeral
+.cache/
+*.tmp
+
+# DeepRead local state
+.deepread_state/
+
+# Claude Code bookkeeping
+.remember/
+.claude/
+
+# Chainlit runtime — uploaded file mirrors, session DB
+.files/
+.chainlit/.chat_history/
+.chainlit/.cache/
+.chainlit/
+
+# Internal-process artifacts — kept out of the public code repo
+#   posts/             — dev.to challenge drafts (publish via dev.to directly)
+#   .design/diagrams/  — Mermaid + Excalidraw system-design diagrams
+# Note: .design/chainlit/ stays tracked so the README hero image works.
+posts/
+.design/diagrams/
